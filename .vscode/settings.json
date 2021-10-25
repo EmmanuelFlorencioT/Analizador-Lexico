@@ -1,0 +1,17 @@
+{
+    "workbench.colorCustomizations": {
+        "[One Dark Pro Darker]": {
+            "activityBar.background": "#2c272c",
+            "editor.background": "#1E1E1E",
+            "statusBar.background": "#680568"
+        },
+        "[C Enhanced]": {
+            "activityBar.background": "#2c272c",
+            "editor.background": "#1E1E1E",
+            "statusBar.background": "#680568"
+        },
+        "activityBar.background": "#1A3318",
+        "titleBar.activeBackground": "#244821",
+        "titleBar.activeForeground": "#F6FBF6"
+    }
+}
