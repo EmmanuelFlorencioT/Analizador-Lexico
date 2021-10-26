@@ -29,11 +29,17 @@ void setSimbol(LST *smb);
 void setNums(LST *num);
 void setSimbolIgnorar(LST *ignora);
 void setTokens(TOKENS *t);
-int comparaCaracter(char a, LST cab);
+int comparaCaracter(char *cad, LST cab);
+void compruebaClasif(char *cad, TOKENS t);
 void analisisLexico(char input[], TOKENS t);
 
 int main(){
+    TOKENS tok;
+    char ejemplo[40];
 
+    iniTokens(&tok);
+    setTokens(&tok);
+    dameCad(ejemplo);
 }
 
 
@@ -154,7 +160,7 @@ void compruebaClasif(char *cad, TOKENS t){
     if(comparaCaracter(cad, t.palabraReser)==0)
         printf("\tPalabra reservada\n");
     else
-        if(comparaCaracter(cad[0], t.numeros)==0) /*Ni un id ni una palabra reservada puede comenzar por un número*/
+        if(comparaCaracter(cad[0], t.numeros)==0)
             printf("\tNumero\n");
         else
             printf("\tIdentificador\n");
