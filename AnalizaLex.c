@@ -99,6 +99,12 @@ void setSimbol(LST *smb){
     insIni(smb, "-");
     insIni(smb, ";");
     insIni(smb, "=");
+    insIni(smb, "&");
+    insIni(smb, "==");
+    insIni(smb, ">=");
+    insIni(smb, "<=");
+    insIni(smb, "&&");
+    insIni(smb, "||");
 }
 
 /*Establecemos los numeros*/
@@ -129,11 +135,11 @@ void setTokens(TOKENS *t){
     setNums(&t->numeros);
 }
 
-int comparaCaracter(char a, LST cab){
+int comparaCaracter(char *cad, LST cab){
     int res=1;
 
     while(cab){
-        res=strcmp(a, cab->nomToken);
+        res=strcmp(cad, cab->nomToken);
         if(res==0)
             break;
         else
@@ -170,15 +176,29 @@ void analisisLexico(char input[], TOKENS t){
         }
         else
             if(comparaCaracter(actual, t.simbolosIgnorados)==0){
-                printf("%s", token);
-                compruebaClasif(token, t);
+                if(strcmp(token, "")!=0){
+                    printf("%s", token);
+                    compruebaClasif(token, t);
+                }
                 strcpy(token, "");
             }
             else
                 if(comparaCaracter(actual, t.simbolos)==0){
-                    printf("%s", token);
-                    compruebaClasif(token, t);
-                    printf("%c\tSimbolo\n", actual);
+                    if(strcmp(token, "")!=0){
+                        printf("%s", token);
+                        compruebaClasif(token, t);
+                    }
+                    /*Aquí debería revisar si se trata de un símbolo o de dos*/
+                    if(comparaCaracter(input[i], t.simbolos)==0){ /*Para ese momento a 'i' ya se le sumó 1*/
+                        strcpy(token, actual);
+                        strcat(token, input[i]);
+                        if(comparaCaracter(token, t.simbolos)==0)
+                            printf("%s\tSimbolo\n", token);
+                        else
+                            printf("%s\tCombinacion invalida\n", token);
+                    }
+                    else
+                        printf("%c\tSimbolo\n", actual);
                     strcpy(token, "");
                 }
     }
