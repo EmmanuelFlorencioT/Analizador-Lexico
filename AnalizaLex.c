@@ -144,7 +144,15 @@ int comparaCaracter(char a, LST cab){
     /*Retornamos un 0 si hubo coincidencia y un 1 si NO hubo coincidencia*/
 }
 
-
+void compruebaClasif(char *cad, TOKENS t){
+    if(comparaCaracter(cad, t.palabraReser)==0)
+        printf("\tPalabra reservada\n");
+    else
+        if(comparaCaracter(cad[0], t.numeros)==0) /*Ni un id ni una palabra reservada puede comenzar por un número*/
+            printf("\tNumero\n");
+        else
+            printf("\tIdentificador\n");
+}
 
 void analisisLexico(char input[], TOKENS t){
     char actual, token[30];
@@ -160,5 +168,18 @@ void analisisLexico(char input[], TOKENS t){
         if(comparaCaracter(actual, t.simbolosIgnorados)!=0 && comparaCaracter(actual, t.simbolos)!=0){
             strcat(token, actual);
         }
+        else
+            if(comparaCaracter(actual, t.simbolosIgnorados)==0){
+                printf("%s", token);
+                compruebaClasif(token, t);
+                strcpy(token, "");
+            }
+            else
+                if(comparaCaracter(actual, t.simbolos)==0){
+                    printf("%s", token);
+                    compruebaClasif(token, t);
+                    printf("%c\tSimbolo\n", actual);
+                    strcpy(token, "");
+                }
     }
 }
