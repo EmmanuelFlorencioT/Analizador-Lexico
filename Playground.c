@@ -32,7 +32,7 @@ void setSimbol(LST *smb);
 void setNums(LST *num);
 void setSimbolIgnorar(LST *ignora);
 void setTokens(TOKENS *t);
-int comparaCaracter(char a, LST cab);
+int comparaCaracter(char *a, LST cab);
 void analisisLexico(char input[], TOKENS t);
 
 int main(){
@@ -62,6 +62,14 @@ int main(){
     //strcat(test, "a");
     res=strcmp(test, " ");
     printf("La respuesta es= %d", res); /*res fue igual a 0*/
+
+    dameCad(test);
+    printf("\n%s", test);
+}
+
+void dameCad(char instruc[]){
+    printf("Cadena a analizar: ");
+    gets(instruc);
 }
 
 void iniLista(LST *cab){
@@ -150,7 +158,7 @@ void setTokens(TOKENS *t){
     setNums(&t->numeros);
 }
 
-int comparaCaracter(char a, LST cab){
+int comparaCaracter(char *a, LST cab){ /*Esta funcion si compila*/
     int res=1;
 
     while(cab){
