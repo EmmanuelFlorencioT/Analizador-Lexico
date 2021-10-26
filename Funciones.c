@@ -29,7 +29,7 @@ void setSimbol(LST *smb);
 void setNums(LST *num);
 void setSimbolIgnorar(LST *ignora);
 void setTokens(TOKENS *t);
-//int comparaCaracter(char *cad, LST cab);
+int comparaCaracter(char car, LST cab);
 //void compruebaClasif(char *cad, TOKENS t);
 //void analisisLexico(char input[], TOKENS t);
 
@@ -40,18 +40,42 @@ void recorre(LST cab){
     }
 }
 
+/*FUNCION AUXILIAR PARA LA PRUEBA DE LA FUNCION*/
+void func(char input[], TOKENS t){
+    int res;
+    char actual;
+
+    actual=input[0];
+    res=comparaCaracter(actual, t.simbolos);
+    printf("Resu de comparaCaracter: %d", res);
+    printf("Caracter actual: %c", actual);
+}
+
+/*      Ahora probando:
+    int comparaCaracter(char *cadn TOKENS t);   */
 int main(){
     TOKENS tok;
     char ejemplo[40];
+    /*VARIABLES AUXILIARES PARA LA PRUEBA DE LA FUNCION*/
+    int res;
+    char actual;
 
     iniTokens(&tok);
     setTokens(&tok);
-    recorre(tok.palabraReser);
+    /* recorre(tok.palabraReser);
     recorre(tok.simbolos);
     recorre(tok.simbolosIgnorados);
     recorre(tok.numeros);
-    //dameCad(ejemplo);
-    //analisisLexico(ejemplo, tok);
+    dameCad(ejemplo);
+    analisisLexico(ejemplo, tok); */
+
+    strcpy(ejemplo, ",Hola)");
+    actual=ejemplo[0];
+    res=comparaCaracter(actual, tok.simbolos);
+    printf("Resultado: %d\n", res);
+    printf("Caracter: %c\n", actual);
+    printf("----------------------------\n");
+    func(ejemplo, tok);
 }
 
 
@@ -152,3 +176,21 @@ void setTokens(TOKENS *t){
     setSimbolIgnorar(&t->simbolosIgnorados);
     setNums(&t->numeros);
 }
+
+int comparaCaracter(char car, LST cab){ /*Funciona Correctamente*/
+    int res=1;
+
+    while(cab){
+        if(car==cab->nomToken[0]){
+            res=0;
+            break;
+        }
+        else
+            cab=cab->liga;
+    }
+
+    return(res);
+    /*Retornamos un 0 si hubo coincidencia y un 1 si NO hubo coincidencia*/
+}
+
+/*NECESITAMOS otra función que compare las palabras*/

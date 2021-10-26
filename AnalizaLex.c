@@ -55,10 +55,10 @@ void iniLista(LST *cab){
 }
 
 void iniTokens(TOKENS *t){
-    iniLista(t->palabraReser);
-    iniLista(t->simbolos);
-    iniLista(t->simbolosIgnorados);
-    iniLista(t->numeros);
+    iniLista(&t->palabraReser);
+    iniLista(&t->simbolos);
+    iniLista(&t->simbolosIgnorados);
+    iniLista(&t->numeros);
 }
 
 /*Necesitamos añadir las palabras reservadas, simbolos, etc. en nodos*/
