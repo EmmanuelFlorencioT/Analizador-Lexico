@@ -30,7 +30,8 @@ void setNums(LST *num);
 void setSimbolIgnorar(LST *ignora);
 void setTokens(TOKENS *t);
 int comparaCaracter(char car, LST cab);
-//void compruebaClasif(char *cad, TOKENS t);
+int comparaCadena(char *cad, LST cab);
+void compruebaClasif(char *cad, TOKENS t);
 //void analisisLexico(char input[], TOKENS t);
 
 void recorre(LST cab){
@@ -41,21 +42,13 @@ void recorre(LST cab){
 }
 
 /*FUNCION AUXILIAR PARA LA PRUEBA DE LA FUNCION*/
-void func(char input[], TOKENS t){
-    int res;
-    char actual;
 
-    actual=input[0];
-    res=comparaCaracter(actual, t.simbolos);
-    printf("Resu de comparaCaracter: %d", res);
-    printf("Caracter actual: %c", actual);
-}
 
 /*      Ahora probando:
-    int comparaCaracter(char *cadn TOKENS t);   */
+    int comparaCadena(char *cad, TOKENS t);   */
 int main(){
     TOKENS tok;
-    char ejemplo[40];
+    char ejemplo[40], token[40];
     /*VARIABLES AUXILIARES PARA LA PRUEBA DE LA FUNCION*/
     int res;
     char actual;
@@ -69,13 +62,11 @@ int main(){
     dameCad(ejemplo);
     analisisLexico(ejemplo, tok); */
 
-    strcpy(ejemplo, ",Hola)");
-    actual=ejemplo[0];
-    res=comparaCaracter(actual, tok.simbolos);
-    printf("Resultado: %d\n", res);
-    printf("Caracter: %c\n", actual);
-    printf("----------------------------\n");
-    func(ejemplo, tok);
+    strcpy(ejemplo, "8");
+    strcpy(token, ejemplo);
+    res=comparaCadena(token, tok.palabraReser);
+    printf("El res de comparaCadena: %d", res);
+    compruebaClasif(token, tok);
 }
 
 
@@ -194,3 +185,27 @@ int comparaCaracter(char car, LST cab){ /*Funciona Correctamente*/
 }
 
 /*NECESITAMOS otra función que compare las palabras*/
+int comparaCadena(char *cad, LST cab){ /*Funciona Correctamente*/
+    int res=1;
+
+    while(cab){
+        res=strcmp(cad, cab->nomToken);
+        if(res==0)
+            break;
+        else
+            cab=cab->liga;
+    }
+
+    return(res);
+    /*Retornamos un 0 si hubo coincidencia*/
+}
+
+void compruebaClasif(char *cad, TOKENS t){ /*Funciona Correctamente*/
+    if(comparaCadena(cad, t.palabraReser)==0)
+        printf("\tPalabra reservada\n");
+    else
+        if(comparaCadena(cad, t.numeros)==0)
+            printf("\tNumero\n");
+        else
+            printf("\tIdentificador\n");
+}
