@@ -31,6 +31,7 @@ void setSimbolIgnorar(LST *ignora);
 void setTokens(TOKENS *t);
 int comparaCaracter(char car, LST cab);
 int comparaCadena(char *cad, LST cab);
+int comparaNum(char *num, LST lstNum);
 void compruebaClasif(char *cad, TOKENS t);
 //void analisisLexico(char input[], TOKENS t);
 
@@ -62,7 +63,7 @@ int main(){
     dameCad(ejemplo);
     analisisLexico(ejemplo, tok); */
 
-    strcpy(ejemplo, "8");
+    strcpy(ejemplo, "9");
     strcpy(token, ejemplo);
     res=comparaCadena(token, tok.palabraReser);
     printf("El res de comparaCadena: %d", res);
@@ -204,8 +205,29 @@ void compruebaClasif(char *cad, TOKENS t){ /*Funciona Correctamente*/
     if(comparaCadena(cad, t.palabraReser)==0)
         printf("\tPalabra reservada\n");
     else
-        if(comparaCadena(cad, t.numeros)==0)
+        if(comparaNum(cad, t.numeros)==0)
             printf("\tNumero\n");
         else
-            printf("\tIdentificador\n");
+            if(comparaNum(cad, t.numeros)==-1)
+                printf("\tNo valido\n");
+            else
+                printf("\tIdentificador\n");
+}
+
+int comparaNum(char *num, LST lstNum){
+    int len, i, res;
+
+    len=strlen(num);
+    for(i=0;i<len;i++){
+        res=comparaCaracter(num[i], lstNum);
+        if(res)
+            break;
+    }
+    if(res && comparaCaracter(num[0], lstNum)==0)
+        res=-1;
+
+    return(res);
+    /*Retorna 0 si es un numero*/
+    /*Retorna 1 si no es un numero*/
+    /*Retorna -1 si es una cadena que comienza con numero pero no es un numero*/
 }
