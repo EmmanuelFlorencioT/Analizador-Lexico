@@ -15,11 +15,25 @@ typedef struct nodo{
     struct nodo *liga;
 } *LST;
 
-void iniLista();
+typedef struct{
+    LST palabraReser;
+    LST simbolos;
+    LST simbolosIgnorados;
+    LST numeros;
+} TOKENS;
+
+void dameCad(char instruc[]);
+void iniLista(LST *cab);
+void iniTokens(TOKENS *t);
 int creaNodo(LST *nvo, char *cadena);
 void insIni(LST *cab, char *cadena);
 void setPalRes(LST *pRes);
-void recorre(LST cab);
+void setSimbol(LST *smb);
+void setNums(LST *num);
+void setSimbolIgnorar(LST *ignora);
+void setTokens(TOKENS *t);
+int comparaCaracter(char a, LST cab);
+void analisisLexico(char input[], TOKENS t);
 
 int main(){
     LST palRsv;
@@ -88,10 +102,65 @@ void setPalRes(LST *pRes){
     insIni(pRes, "while");
     insIni(pRes, "for");
 }
-
+ /*
 void recorre(LST cab){
     while(cab){
         printf("%s\n", cab->nomToken);
         cab=cab->liga;
     }
+}
+*/
+
+/*Establecemos los simbolos*/
+void setSimbol(LST *smb){
+    insIni(smb, "(");
+    insIni(smb, ")");
+    insIni(smb, ",");
+    insIni(smb, "+");
+    insIni(smb, "-");
+    insIni(smb, ";");
+    insIni(smb, "=");
+}
+
+/*Establecemos los numeros*/
+void setNums(LST *num){
+    insIni(num, "0");
+    insIni(num, "1");
+    insIni(num, "2");
+    insIni(num, "3");
+    insIni(num, "4");
+    insIni(num, "5");
+    insIni(num, "6");
+    insIni(num, "7");
+    insIni(num, "8");
+    insIni(num, "9");
+}
+
+/*Establecemos los simbolos a ignorar*/
+void setSimbolIgnorar(LST *ignora){
+    insIni(ignora, " ");
+    insIni(ignora, "\n");
+    insIni(ignora, "\t");
+}
+
+void setTokens(TOKENS *t){
+    setPalRes(&t->palabraReser);
+    setSimbol(&t->simbolos);
+    setSimbolIgnorar(&t->simbolosIgnorados);
+    setNums(&t->numeros);
+}
+
+int comparaCaracter(char a, LST cab){
+    int res=1;
+
+    while(cab){
+        res=strcmp(a, cab->nomToken);
+        if(res==0)
+            break;
+        else
+            cab=cab->liga;
+    }
+
+    return(res);
+    /*Retornamos un 0 si hubo coincidencia y un 1 si NO hubo coincidencia*/
 }

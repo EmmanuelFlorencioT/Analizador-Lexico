@@ -13,5 +13,8 @@
         "activityBar.background": "#1A3318",
         "titleBar.activeBackground": "#244821",
         "titleBar.activeForeground": "#F6FBF6"
+    },
+    "files.associations": {
+        "stdlib.h": "c"
     }
 }

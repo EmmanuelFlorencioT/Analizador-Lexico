@@ -19,14 +19,18 @@ typedef struct{
     LST numeros;
 } TOKENS;
 
-void iniLista();
+void dameCad(char instruc[]);
+void iniLista(LST *cab);
+void iniTokens(TOKENS *t);
 int creaNodo(LST *nvo, char *cadena);
 void insIni(LST *cab, char *cadena);
 void setPalRes(LST *pRes);
 void setSimbol(LST *smb);
 void setNums(LST *num);
 void setSimbolIgnorar(LST *ignora);
-void dameCad(char instruc[]);
+void setTokens(TOKENS *t);
+int comparaCaracter(char a, LST cab);
+void analisisLexico(char input[], TOKENS t);
 
 int main(){
 
@@ -154,7 +158,7 @@ void analisisLexico(char input[], TOKENS t){
         i++;
         cont++;
         if(comparaCaracter(actual, t.simbolosIgnorados)!=0 && comparaCaracter(actual, t.simbolos)!=0){
-            
+            strcat(token, actual);
         }
     }
 }
