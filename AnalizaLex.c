@@ -29,17 +29,45 @@ void setSimbol(LST *smb);
 void setNums(LST *num);
 void setSimbolIgnorar(LST *ignora);
 void setTokens(TOKENS *t);
-int comparaCaracter(char *cad, LST cab);
+int comparaCaracter(char car, LST cab);
+int comparaCadena(char *cad, LST cab);
+int comparaNum(char *num, LST lstNum);
 void compruebaClasif(char *cad, TOKENS t);
 void analisisLexico(char input[], TOKENS t);
 
+void recorre(LST cab){
+    while(cab){
+        printf("Nombre del token: %s\n", cab->nomToken);
+        cab=cab->liga;
+    }
+}
+
+/*FUNCION AUXILIAR PARA LA PRUEBA DE LA FUNCION*/
+
+
+/*      Ahora probando:
+    int comparaCadena(char *cad, TOKENS t);   */
 int main(){
     TOKENS tok;
-    char ejemplo[40];
+    char ejemplo[40], token[40];
+    /*VARIABLES AUXILIARES PARA LA PRUEBA DE LA FUNCION*/
+    int res;
+    char actual;
 
     iniTokens(&tok);
     setTokens(&tok);
+    /* recorre(tok.palabraReser);
+    recorre(tok.simbolos);
+    recorre(tok.simbolosIgnorados);
+    recorre(tok.numeros); */
     dameCad(ejemplo);
+    analisisLexico(ejemplo, tok);
+
+    /* strcpy(ejemplo, "9");
+    strcpy(token, ejemplo);
+    res=comparaCadena(token, tok.palabraReser);
+    printf("El res de comparaCadena: %d", res);
+    compruebaClasif(token, tok); */
 }
 
 
@@ -141,7 +169,24 @@ void setTokens(TOKENS *t){
     setNums(&t->numeros);
 }
 
-int comparaCaracter(char *cad, LST cab){
+int comparaCaracter(char car, LST cab){ /*Funciona Correctamente*/
+    int res=1;
+
+    while(cab){
+        if(car==cab->nomToken[0]){
+            res=0;
+            break;
+        }
+        else
+            cab=cab->liga;
+    }
+
+    return(res);
+    /*Retornamos un 0 si hubo coincidencia y un 1 si NO hubo coincidencia*/
+}
+
+/*NECESITAMOS otra función que compare las palabras*/
+int comparaCadena(char *cad, LST cab){ /*Funciona Correctamente*/
     int res=1;
 
     while(cab){
@@ -153,32 +198,59 @@ int comparaCaracter(char *cad, LST cab){
     }
 
     return(res);
-    /*Retornamos un 0 si hubo coincidencia y un 1 si NO hubo coincidencia*/
+    /*Retornamos un 0 si hubo coincidencia*/
 }
 
-void compruebaClasif(char *cad, TOKENS t){
-    if(comparaCaracter(cad, t.palabraReser)==0)
+void compruebaClasif(char *cad, TOKENS t){ /*Funciona Correctamente*/
+    if(comparaCadena(cad, t.palabraReser)==0)
         printf("\tPalabra reservada\n");
     else
-        if(comparaCaracter(cad[0], t.numeros)==0)
+        if(comparaNum(cad, t.numeros)==0)
             printf("\tNumero\n");
         else
-            printf("\tIdentificador\n");
+            if(comparaNum(cad, t.numeros)==-1)
+                printf("\tNo valido\n");
+            else
+                printf("\tIdentificador\n");
+}
+
+int comparaNum(char *num, LST lstNum){ /*Funciona Correctamente*/
+    int len, i, res;
+
+    len=strlen(num);
+    for(i=0;i<len;i++){
+        res=comparaCaracter(num[i], lstNum);
+        if(res)
+            break;
+    }
+    if(res && comparaCaracter(num[0], lstNum)==0)
+        res=-1;
+
+    return(res);
+    /*Retorna 0 si es un numero*/
+    /*Retorna 1 si no es un numero*/
+    /*Retorna -1 si es una cadena que comienza con numero pero no es un numero*/
+}
+
+void concatena(char *cad, char caract){
+    int len;
+    len=strlen(cad);
+    cad[len]=caract;
+    cad[len+1]='\0'; /*Terminador de cadena*/
 }
 
 void analisisLexico(char input[], TOKENS t){
     char actual, token[30];
     int cadLon, i=0; /*La 'i' será para ubicarse dentro de la cadena input*/
-    int cont=0; /*El contador para sabe cuantos espacios avencé por el token*/
 
     strcpy(token, "");
+    concatena(input, ' '); /*El espacio al final permite que se analicen los tokens anteriores*/
     cadLon=strlen(input);
     while(i<cadLon){
         actual=input[i];
         i++;
-        cont++;
         if(comparaCaracter(actual, t.simbolosIgnorados)!=0 && comparaCaracter(actual, t.simbolos)!=0){
-            strcat(token, actual);
+            concatena(token, actual);
         }
         else
             if(comparaCaracter(actual, t.simbolosIgnorados)==0){
@@ -196,15 +268,20 @@ void analisisLexico(char input[], TOKENS t){
                     }
                     /*Aquí debería revisar si se trata de un símbolo o de dos*/
                     if(comparaCaracter(input[i], t.simbolos)==0){ /*Para ese momento a 'i' ya se le sumó 1*/
-                        strcpy(token, actual);
-                        strcat(token, input[i]);
-                        if(comparaCaracter(token, t.simbolos)==0)
+                        concatena(token, actual);
+                        concatena(token, input[i]);
+                        i++;
+                        actual=input[i]; /*Debemos saltarnos al siguiente espacio*/
+                        if(comparaCadena(token, t.simbolos)==0)
                             printf("%s\tSimbolo\n", token);
                         else
                             printf("%s\tCombinacion invalida\n", token);
                     }
                     else
-                        printf("%c\tSimbolo\n", actual);
+                        if(comparaCaracter(actual, t.simbolos)==0)
+                            printf("%c\tSimbolo\n", actual);
+                        else
+                            printf("%c\tNo valido\n", actual);
                     strcpy(token, "");
                 }
     }

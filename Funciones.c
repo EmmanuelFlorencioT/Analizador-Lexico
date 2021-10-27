@@ -33,6 +33,7 @@ int comparaCaracter(char car, LST cab);
 int comparaCadena(char *cad, LST cab);
 int comparaNum(char *num, LST lstNum);
 void compruebaClasif(char *cad, TOKENS t);
+void concatena(char *cad, char caract);
 //void analisisLexico(char input[], TOKENS t);
 
 void recorre(LST cab){
@@ -63,11 +64,14 @@ int main(){
     dameCad(ejemplo);
     analisisLexico(ejemplo, tok); */
 
-    strcpy(ejemplo, "9");
+    actual='Z';
+    strcpy(ejemplo, "999");
     strcpy(token, ejemplo);
     res=comparaCadena(token, tok.palabraReser);
-    printf("El res de comparaCadena: %d", res);
+    printf("El res de comparaCadena: %d\n", res);
     compruebaClasif(token, tok);
+    concatena(token, actual);
+    printf("Nueva concatenacion: %s", token);
 }
 
 
@@ -214,7 +218,7 @@ void compruebaClasif(char *cad, TOKENS t){ /*Funciona Correctamente*/
                 printf("\tIdentificador\n");
 }
 
-int comparaNum(char *num, LST lstNum){
+int comparaNum(char *num, LST lstNum){ /*Funciona Correctamente*/
     int len, i, res;
 
     len=strlen(num);
@@ -231,3 +235,11 @@ int comparaNum(char *num, LST lstNum){
     /*Retorna 1 si no es un numero*/
     /*Retorna -1 si es una cadena que comienza con numero pero no es un numero*/
 }
+
+void concatena(char *cad, char caract){
+    int len;
+    len=strlen(cad);
+    cad[len]=caract;
+    cad[len+1]='\0'; /*Terminador de cadena*/
+}
+
