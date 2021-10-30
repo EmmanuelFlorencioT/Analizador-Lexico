@@ -261,6 +261,7 @@ void analisisLexico(char input[], TOKENS t){
                     if(strcmp(token, "")!=0){
                         printf("%s", token);
                         compruebaClasif(token, t);
+                        strcpy(token, "");
                     }
                     /*Aquí debería revisar si se trata de un símbolo o de dos*/
                     if(comparaCaracter(input[i], t.simbolos)==0){ /*Para ese momento a 'i' ya se le sumó 1*/
