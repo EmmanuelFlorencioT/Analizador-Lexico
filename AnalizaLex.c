@@ -19,7 +19,6 @@ typedef struct{
     LST numeros;
 } TOKENS;
 
-void dameCad(char instruc[]);
 void asignaInput(FILE *f, char input[]);
 void iniLista(LST *cab);
 void iniTokens(TOKENS *t);
@@ -36,12 +35,6 @@ int comparaNum(char *num, LST lstNum);
 void compruebaClasif(char *cad, TOKENS t);
 void analisisLexico(char input[], TOKENS t);
 
-void recorre(LST cab){
-    while(cab){
-        printf("Nombre del token: %s\n", cab->nomToken);
-        cab=cab->liga;
-    }
-}
 
 int main(){
     TOKENS tok;
@@ -52,7 +45,6 @@ int main(){
     setTokens(&tok);
     miArch=fopen("input.txt", "r");
     asignaInput(miArch, ejemplo);
-    /*dameCad(ejemplo);*/
     analisisLexico(ejemplo, tok);
     fclose(miArch);
 
@@ -66,12 +58,6 @@ void asignaInput(FILE *f, char input[]){
         i++;
     }
     input[i-1]='\0';
-}
-
-/*Para guardar el input en una variable*/
-void dameCad(char instruc[]){
-    printf("Cadena a analizar: ");
-    gets(instruc);
 }
 
 /*Inicializamos las listas para guardar nuestras clasifiaciones de tokens*/
@@ -119,6 +105,7 @@ void setPalRes(LST *pRes){
     insIni(pRes, "if");
     insIni(pRes, "while");
     insIni(pRes, "for");
+    insIni(pRes, "break");
 }
 
 /*Establecemos los simbolos*/
@@ -135,6 +122,8 @@ void setSimbol(LST *smb){
     insIni(smb, "&");
     insIni(smb, ">");
     insIni(smb, "<");
+    insIni(smb, "{");
+    insIni(smb, "}");
     insIni(smb, "==");
     insIni(smb, ">=");
     insIni(smb, "<=");
@@ -176,7 +165,7 @@ void setTokens(TOKENS *t){
     setNums(&t->numeros);
 }
 
-int comparaCaracter(char car, LST cab){ /*Funciona Correctamente*/
+int comparaCaracter(char car, LST cab){
     int res=1;
 
     while(cab){
@@ -193,7 +182,7 @@ int comparaCaracter(char car, LST cab){ /*Funciona Correctamente*/
 }
 
 /*NECESITAMOS otra función que compare las palabras*/
-int comparaCadena(char *cad, LST cab){ /*Funciona Correctamente*/
+int comparaCadena(char *cad, LST cab){
     int res=1;
 
     while(cab){
@@ -208,7 +197,7 @@ int comparaCadena(char *cad, LST cab){ /*Funciona Correctamente*/
     /*Retornamos un 0 si hubo coincidencia*/
 }
 
-void compruebaClasif(char *cad, TOKENS t){ /*Funciona Correctamente*/
+void compruebaClasif(char *cad, TOKENS t){
     if(comparaCadena(cad, t.palabraReser)==0)
         printf("\tPalabra reservada\n");
     else
@@ -221,7 +210,7 @@ void compruebaClasif(char *cad, TOKENS t){ /*Funciona Correctamente*/
                 printf("\tIdentificador\n");
 }
 
-int comparaNum(char *num, LST lstNum){ /*Funciona Correctamente*/
+int comparaNum(char *num, LST lstNum){
     int len, i, res;
 
     len=strlen(num);
