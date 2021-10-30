@@ -20,6 +20,7 @@ typedef struct{
 } TOKENS;
 
 void dameCad(char instruc[]);
+void asignaInput(FILE *f, char input[]);
 void iniLista(LST *cab);
 void iniTokens(TOKENS *t);
 int creaNodo(LST *nvo, char *cadena);
@@ -42,34 +43,30 @@ void recorre(LST cab){
     }
 }
 
-/*FUNCION AUXILIAR PARA LA PRUEBA DE LA FUNCION*/
-
-
-/*      Ahora probando:
-    int comparaCadena(char *cad, TOKENS t);   */
 int main(){
     TOKENS tok;
-    char ejemplo[40], token[40];
-    /*VARIABLES AUXILIARES PARA LA PRUEBA DE LA FUNCION*/
-    int res;
-    char actual;
+    FILE *miArch;
+    char ejemplo[1000];
 
     iniTokens(&tok);
     setTokens(&tok);
-    /* recorre(tok.palabraReser);
-    recorre(tok.simbolos);
-    recorre(tok.simbolosIgnorados);
-    recorre(tok.numeros); */
-    dameCad(ejemplo);
+    miArch=fopen("input.txt", "r");
+    asignaInput(miArch, ejemplo);
+    /*dameCad(ejemplo);*/
     analisisLexico(ejemplo, tok);
+    fclose(miArch);
 
-    /* strcpy(ejemplo, "9");
-    strcpy(token, ejemplo);
-    res=comparaCadena(token, tok.palabraReser);
-    printf("El res de comparaCadena: %d", res);
-    compruebaClasif(token, tok); */
 }
 
+void asignaInput(FILE *f, char input[]){
+    int i=0;
+
+    while(!feof(f)){
+        fscanf(f, "%c", &input[i]);
+        i++;
+    }
+    input[i-1]='\0';
+}
 
 /*Para guardar el input en una variable*/
 void dameCad(char instruc[]){
@@ -131,14 +128,24 @@ void setSimbol(LST *smb){
     insIni(smb, ",");
     insIni(smb, "+");
     insIni(smb, "-");
+    insIni(smb, "*");
+    insIni(smb, "/");
     insIni(smb, ";");
     insIni(smb, "=");
     insIni(smb, "&");
+    insIni(smb, ">");
+    insIni(smb, "<");
     insIni(smb, "==");
     insIni(smb, ">=");
     insIni(smb, "<=");
     insIni(smb, "&&");
     insIni(smb, "||");
+    insIni(smb, "++");
+    insIni(smb, "--");
+    insIni(smb, "+=");
+    insIni(smb, "-=");
+    insIni(smb, "*=");
+    insIni(smb, "/=");
 }
 
 /*Establecemos los numeros*/
