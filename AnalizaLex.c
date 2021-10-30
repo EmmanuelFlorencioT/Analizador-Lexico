@@ -275,10 +275,7 @@ void analisisLexico(char input[], TOKENS t){
                             printf("%s\tCombinacion invalida\n", token);
                     }
                     else
-                        if(comparaCaracter(actual, t.simbolos)==0)
-                            printf("%c\tSimbolo\n", actual);
-                        else
-                            printf("%c\tNo valido\n", actual);
+                        printf("%c\tSimbolo\n", actual);
                     strcpy(token, "");
                 }
     }

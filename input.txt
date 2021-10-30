@@ -1,7 +1,8 @@
-int a= 9, b   =  0;
+int a= 9, b   =  0r6,r;
 for(int i=0; i<a; i++)
 {
-    b+=   ;
+    b+= 1  ;
     if(b>9)
         break;
+    r**;
 }
